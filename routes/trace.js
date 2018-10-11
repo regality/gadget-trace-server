@@ -1,8 +1,8 @@
 let express = require('express')
 let router = express.Router()
 
-router.get('/request/:request_id', function (req, res, next) {
-  let requests = getRequests(req.params.request_id)
+router.get('/request/:requestId', function (req, res, next) {
+  let requests = getRequests(req.params.requestId)
   res.json({ requests: requests })
 })
 
@@ -15,13 +15,13 @@ router.post('/request/all', function (req, res, next) {
   res.json({ requests: requests })
 })
 
-router.post('/request/:request_id', function (req, res, next) {
-  addRequest(req.params.request_id, req.body)
+router.post('/request/:requestId', function (req, res, next) {
+  addRequest(req.params.requestId, req.body)
   res.json({ ok: true })
 })
 
-router.delete('/request/:request_id', function (req, res, next) {
-  deleteRequest(req.params.request_id)
+router.delete('/request/:requestId', function (req, res, next) {
+  deleteRequest(req.params.requestId)
   res.json({ ok: true })
 })
 
@@ -29,7 +29,7 @@ let requests = {}
 
 function addRequest (requestId, requestData) {
   if (!requests[requestId]) requests[requestId] = []
-  requestData.request_id = requestId
+  requestData.requestId = requestId
   requests[requestId].push(requestData)
 }
 
@@ -48,17 +48,3 @@ function getRequests (requestId) {
 }
 
 module.exports = router
-
-// schema:
-//      trace_id
-//      trace_uid
-//      trace_from_uid
-//      url
-//      headers
-//      received
-//      response
-//      variables
-//      calls
-//          url
-//          params
-//          response
