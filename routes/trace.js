@@ -1,50 +1,50 @@
 let express = require('express')
 let router = express.Router()
 
-router.get('/request/:request_id', function(req, res, next) {
-    let requests = get_requests(req.params.request_id)
-    res.json({ requests: requests })
+router.get('/request/:request_id', function (req, res, next) {
+  let requests = getRequests(req.params.request_id)
+  res.json({ requests: requests })
 })
 
-router.post('/request/all', function(req, res, next) {
-    const requestIds = req.body.requestIds.split(',')
-    let requests = []
-    requestIds.forEach(requestId => {
-        requests = requests.concat(get_requests(requestId))
-    })
-    res.json({ requests: requests })
+router.post('/request/all', function (req, res, next) {
+  const requestIds = req.body.requestIds.split(',')
+  let requests = []
+  requestIds.forEach(requestId => {
+    requests = requests.concat(getRequests(requestId))
+  })
+  res.json({ requests: requests })
 })
 
-router.post('/request/:request_id', function(req, res, next) {
-    add_request(req.params.request_id, req.body)
-    res.json({ ok: true })
+router.post('/request/:request_id', function (req, res, next) {
+  addRequest(req.params.request_id, req.body)
+  res.json({ ok: true })
 })
 
-router.delete('/request/:request_id', function(req, res, next) {
-    delete_request(req.params.request_id)
-    res.json({ ok: true })
+router.delete('/request/:request_id', function (req, res, next) {
+  deleteRequest(req.params.request_id)
+  res.json({ ok: true })
 })
 
 let requests = {}
 
-function add_request(request_id, request_data) {
-    if (!requests[request_id]) requests[request_id] = []
-    request_data.request_id = request_id
-    requests[request_id].push(request_data)
+function addRequest (requestId, requestData) {
+  if (!requests[requestId]) requests[requestId] = []
+  requestData.request_id = requestId
+  requests[requestId].push(requestData)
 }
 
-function delete_request(request_id) {
-    delete requests[request_id]
+function deleteRequest (requestId) {
+  delete requests[requestId]
 }
 
-function get_requests(request_id) {
-    if (requests[request_id]) {
-        let arr = requests[request_id]
-        delete requests[request_id]
-        return arr
-    } else {
-        return []
-    }
+function getRequests (requestId) {
+  if (requests[requestId]) {
+    let arr = requests[requestId]
+    delete requests[requestId]
+    return arr
+  } else {
+    return []
+  }
 }
 
 module.exports = router
